@@ -5,7 +5,7 @@ from ecommerceApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
+    path('index/', views.index, name='index'),
     path('about/', views.about, name = 'about'),
     path('chefs/', views.chefs, name='chefs'),
     path('contact/', views.contact, name='contact'),
@@ -13,5 +13,7 @@ urlpatterns = [
     path('orders/', views.orders, name='orders'),
     path('reservation/', views.reservation, name='reservation'),
     path('reviews/', views.reviews, name='reviews'),
-    path('starter-page/', views.starter_page, name='starter_page')
+    path('starter-page/', views.starter_page, name='starter_page'),
+    path('register/', views.register, name='register'),
+    path('', views.login, name='login'),
 ]

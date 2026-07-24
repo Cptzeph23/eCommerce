@@ -31,7 +31,10 @@ def reviews(request):
 def starter_page(request):
     return render(request, 'starter-page.html')
 
+def login(request):
+    return render(request, 'login.html')
 
-
+def register(request):
+    return render(request, 'register.html')
 
 
