@@ -5,7 +5,15 @@ from django.shortcuts import render
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    if request.method == 'POST':
+        if NewUser.objects.filter(
+            email=request.POST.get('email'),
+            password=request.POST.get('password')).exists():
+            return render(request, 'index.html')
+        else:
+            return redirect('/login/')
+    else: 
+        return render(request, 'login.html')
 
 def about(request):
     return render(request, 'about.html')
@@ -14,7 +22,17 @@ def chefs(request):
     return render(request, 'chefs.html')
 
 def contact(request):
-    return render(request, 'contact.html')
+    if request.method == 'POST':
+        message = Contact(
+            name=request.POST.get('name'),
+            email=request.POST.get('email'),
+            subject=request.POST.get('subject'),
+            message=request.POST.get('message')
+        )
+        message.save()
+        return redirect('/contact/')
+    else:
+        return render(request, 'contact.html')
 
 def menu(request):
     return render(request, 'menu.html')
@@ -33,8 +51,14 @@ def starter_page(request):
 
 def login(request):
     return render(request, 'login.html')
-
 def register(request):
-    return render(request, 'register.html')
-
-
+    if request.method == 'POST':
+        users = NewUser(
+            name=request.POST.get('name'),
+            email=request.POST.get('email'),
+            password=request.POST.get('password')
+        )
+        users.save()
+        return redirect('/login/')
+    else:
+        return render(request, 'register.html')
