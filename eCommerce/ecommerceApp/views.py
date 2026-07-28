@@ -49,6 +49,7 @@ def starter_page(request):
     return render(request, 'starter-page.html')
 
 def login(request):
+    
     return render(request, 'login.html')
 def register(request):
     if request.method == 'POST':
