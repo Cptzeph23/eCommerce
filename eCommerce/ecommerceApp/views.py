@@ -49,8 +49,8 @@ def starter_page(request):
     return render(request, 'starter-page.html')
 
 def login(request):
-    
     return render(request, 'login.html')
+
 def register(request):
     if request.method == 'POST':
         users = NewUser(
@@ -59,6 +59,6 @@ def register(request):
             password=request.POST.get('password')
         )
         users.save()
-        return redirect('/login/')
+        return redirect('/')
     else:
         return render(request, 'register.html')
