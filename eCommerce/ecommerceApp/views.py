@@ -5,14 +5,19 @@ from .models import NewUser, Contact
 
 def index(request):
     if request.method == 'POST':
-        if NewUser.objects.filter(
-            email=request.POST.get('email'),
-            password=request.POST.get('password')).exists():
-            return render(request, 'index.html')
-        else:
-            return redirect('/login/')
-    else: 
-        return render(request, 'login.html')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        if NewUser.objects.filter(email=email, password=password).exists():
+            request.session['logged_in'] = True
+            request.session['user_email'] = email
+            return redirect('index')
+
+        return redirect('login')
+    if request.session.get('logged_in'):
+        return render(request, 'index.html')
+
+    return render(request, 'login.html')
 
 def about(request):
     return render(request, 'about.html')
@@ -49,6 +54,17 @@ def starter_page(request):
     return render(request, 'starter-page.html')
 
 def login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        if NewUser.objects.filter(email=email, password=password).exists():
+            request.session['logged_in'] = True
+            request.session['user_email'] = email
+            return redirect('index')
+
+        return redirect('login')
+
     return render(request, 'login.html')
 
 def register(request):
