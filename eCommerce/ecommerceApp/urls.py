@@ -4,7 +4,6 @@ from django.urls import path
 from ecommerceApp import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('index/', views.index, name='index'),
     path('about/', views.about, name = 'about'),
     path('chefs/', views.chefs, name='chefs'),
