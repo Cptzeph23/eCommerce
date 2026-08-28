@@ -5,8 +5,28 @@ from django.dispatch import receiver
 
 # Create your models here.
 # Profile
+class Profile(models.Model):
+    """ Extends Django's Built in User with app-specific fields"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE,
+    related_name="profile")
+    phone_number = models.CharField(max_length=20, blank=True)
+    google_id = models.CharField(max_length=250, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Profile of {self.user.username}"
+
+@receiver(post_save, sender=User)
+def create_or_update_profile(sender, instance, created, **kwargs):
+    """Automatically creates a profile whenever a new User is created"""
+    if created:
+        Profile.objects.create(User=instance)
+    else:
+        # Profile might not exist for pre-existing users; get_or_create is effective    
+        Profile.objects.get_or_create(user=instance)
 
 
+     
 
 
 
