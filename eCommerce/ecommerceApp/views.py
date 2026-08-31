@@ -1,7 +1,46 @@
 from django.shortcuts import render, redirect
 from .models import NewUser, Contact
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import RegistrationForm
 
 # Create your views here.
+def register_view(request):
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # auto-login after registration
+            messages.success(request, "Account created successfully.")
+            return redirect("index")
+        messages.error(request, "Please Correct the errors below")
+    else:
+        form = RegistrationForm()
+    return render(request, "register.html", {"form": form})
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("index")
+        messages.error(request, "Invalid username or password")
+    return render(request, "login.html")
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("index")
+
+@login_required
+def profile_view(request):
+    return render(request, "profile.html", {"profile":request.user.profile})
+
+
+
 
 def index(request):
     if request.method == 'POST':
