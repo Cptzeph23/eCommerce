@@ -6,7 +6,6 @@ from .models import Contact, Profile, NewUser, Member
 admin.site.register(Contact)
 admin.site.register(Profile)
 
-
 admin.site.register(NewUser)
 admin.site.register(Member)
 
