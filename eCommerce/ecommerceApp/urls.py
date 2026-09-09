@@ -13,8 +13,8 @@ urlpatterns = [
     path('reservation/', views.reservation, name='reservation'),
     path('reviews/', views.reviews, name='reviews'),
     path('starter-page/', views.starter_page, name='starter_page'),
-    path('register/', views.register_view, name='register'),
-    path('', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('profile/', views.profile_view, name='profile')
+    path('register/', views.register_view, name='register_view'),
+    path('', views.login_view, name='login_view'),
+    path('logout/', views.logout_view, name='logout_view'),
+    path('profile/', views.profile_view, name='profile_view'),
 ]

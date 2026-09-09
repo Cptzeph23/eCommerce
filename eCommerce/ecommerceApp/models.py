@@ -20,20 +20,13 @@ class Profile(models.Model):
 def create_or_update_profile(sender, instance, created, **kwargs):
     """Automatically creates a profile whenever a new User is created"""
     if created:
-        Profile.objects.create(User=instance)
+        Profile.objects.create(user=instance)
     else:
         # Profile might not exist for pre-existing users; get_or_create is effective    
         Profile.objects.get_or_create(user=instance)
 
 
      
-
-
-
-
-
-
-
 
 class Contact(models.Model):
     name = models.CharField(max_length=100)

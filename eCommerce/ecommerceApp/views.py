@@ -10,21 +10,22 @@ def register_view(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)  # auto-login after registration
-            messages.success(request, "Account created successfully.")
-            return redirect("index")
+            form.save()
+            messages.success(request, "Account created successfully. Please login.")
+            return redirect("login_view")
         messages.error(request, "Please Correct the errors below")
     else:
         form = RegistrationForm()
     return render(request, "register.html", {"form": form})
+
 def login_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
+        username = request.POST.get("username") or request.POST.get("email")
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, "You are logged in.")
             return redirect("index")
         messages.error(request, "Invalid username or password")
     return render(request, "login.html")
@@ -32,7 +33,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("index")
+    return redirect("login_view")
 
 @login_required
 def profile_view(request):
@@ -42,20 +43,20 @@ def profile_view(request):
 
 
 def index(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+    # if request.method == 'POST':
+    #     email = request.POST.get('email')
+    #     password = request.POST.get('password')
 
-        if NewUser.objects.filter(email=email, password=password).exists():
-            request.session['logged_in'] = True
-            request.session['user_email'] = email
-            return redirect('index')
+    #     if NewUser.objects.filter(email=email, password=password).exists():
+    #         request.session['logged_in'] = True
+    #         request.session['user_email'] = email
+    #         return redirect('index')
 
-        return redirect('login')
-    if request.session.get('logged_in'):
-        return render(request, 'index.html')
+    #     return redirect('login')
+    # if request.session.get('logged_in'):
+    #     return render(request, 'index.html')
 
-    return render(request, 'login.html')
+    return render(request, 'index.html')
 
 def about(request):
     return render(request, 'about.html')
@@ -91,28 +92,28 @@ def reviews(request):
 def starter_page(request):
     return render(request, 'starter-page.html')
 
-def login(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+# def login(request):
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
 
-        if NewUser.objects.filter(email=email, password=password).exists():
-            request.session['logged_in'] = True
-            request.session['user_email'] = email
-            return redirect('index')
+#         if NewUser.objects.filter(email=email, password=password).exists():
+#             request.session['logged_in'] = True
+#             request.session['user_email'] = email
+#             return redirect('index')
 
-        return redirect('login')
+#         return redirect('login')
 
-    return render(request, 'login.html')
+#     return render(request, 'login.html')
 
-def register(request):
-    if request.method == 'POST':
-        users = NewUser(
-            name=request.POST.get('name'),
-            email=request.POST.get('email'),
-            password=request.POST.get('password')
-        )
-        users.save()
-        return redirect('/')
-    else:
-        return render(request, 'register.html')
+# def register(request):
+#     if request.method == 'POST':
+#         users = NewUser(
+#             name=request.POST.get('name'),
+#             email=request.POST.get('email'),
+#             password=request.POST.get('password')
+#         )
+#         users.save()
+#         return redirect('/')
+#     else:
+#         return render(request, 'register.html')
